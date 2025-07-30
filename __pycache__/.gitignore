@@ -1,4 +1,43 @@
-solana_wallet.json
+# Python
 __pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Virtual Environments
+env/
+venv/
+.venv/
+
+# Environment Variables
 .env
-env
+.env.*
+
+# Wallets & Keys
+wallet.json
+*.key
+*.pem
+*.secret
+*.pub
+
+# Logs & History
+*.log
+*.out
+wallet_log.json
+
+# Jupyter & IPython
+.ipynb_checkpoints
+*.ipynb
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
+
+# Misc
+*.bak
+*.tmp
+*.swp
