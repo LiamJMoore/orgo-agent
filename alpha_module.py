@@ -3,17 +3,14 @@ import openai
 import os
 from dotenv import load_dotenv
 
-# Load API key from .env
 load_dotenv()
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 DEXSCREENER_API = "https://api.dexscreener.com/token-profiles/latest/v1"
-HEADERS = {
-    "User-Agent": "OrgoAlphaHunterBot/2.0"
-}
+HEADERS = {"User-Agent": "OrgoAlphaHunterBot/2.0"}
 
 
-def analyze_token(name, description, tweet):
+def analyze_token(name, description, tweet=""):
     prompt = f"""
 Token Name: {name}
 Description: {description}
@@ -34,13 +31,12 @@ Return format:
 2. Risk Level: <emoji>
 3. 1-line summary: <summary>
 """
-
     try:
-        response = openai.ChatCompletion.create(
+        res = openai.ChatCompletion.create(
             model="gpt-4",
             messages=[{"role": "user", "content": prompt}]
         )
-        return response.choices[0].message.content.strip()
+        return res.choices[0].message.content.strip()
     except Exception as e:
         return f"❌ GPT Error: {e}"
 
@@ -64,15 +60,21 @@ def run_alpha_hunter():
             name = token.get("header", "Unknown")
             description = token.get("description", "")
             address = token.get("tokenAddress", "")
-            url = token.get("url", "")
+            pair_address = token.get("pairAddress", "")
+            url = f"https://dexscreener.com/solana/{pair_address}"
 
-            print(f"🔍 {name} — {address}")
-            summary = analyze_token(name, description, "")
+            print(f"🔍 {url} — {address}")
+            summary = analyze_token(name, description)
             print(summary)
             print(f"🔗 {url}\n")
 
             if "🟢" in summary and "Legit" in summary:
-                results.append({"symbol": name, "description": description, "url": url, "address": address})
+                results.append({
+                    "symbol": name,
+                    "description": description,
+                    "url": url,
+                    "address": address
+                })
 
         if results:
             best_token = sorted(results, key=lambda x: x["symbol"])[0]
@@ -82,7 +84,3 @@ def run_alpha_hunter():
     except Exception as e:
         print(f"❌ Failed to fetch tokens: {e}")
         return None
-
-
-if __name__ == "__main__":
-    run_alpha_hunter()

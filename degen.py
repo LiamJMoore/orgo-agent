@@ -1,3 +1,5 @@
+import time
+import json
 from degen_tools import (
     generate_keypair,
     check_balance,
@@ -5,12 +7,22 @@ from degen_tools import (
     get_usd_portfolio_value,
     save_wallet_to_file
 )
-from alpha_hunter import run_alpha_hunter
-import time
+from alpha_module import run_alpha_hunter
+
+
+def log_wallet_value(pubkey, tokens, total_usd):
+    entry = {
+        "timestamp": time.time(),
+        "pubkey": pubkey,
+        "total_usd": total_usd,
+        "tokens": tokens
+    }
+    with open("wallet_log.json", "a") as f:
+        f.write(json.dumps(entry) + "\n")
 
 
 def run_degen_mode():
-    print("🔥 ORGO DEGEN MODE v1 🔥\n")
+    print("🔥 ORGO DEGEN MODE v2 🔥\n")
 
     print("🧠 Scanning top Solana tokens with Alpha Hunter...\n")
     best_token = run_alpha_hunter()
@@ -37,16 +49,9 @@ def run_degen_mode():
         print(f"• {symbol}: ${value:.2f}")
     print(f"\n💰 Total: ${total:.2f}\n")
 
-    if best_token:
-        print(f"🛒 Simulating trade on Jupiter for {best_token['symbol']}...")
-        print("🛒 Simulated trade link:")
-        print(f"https://jupiter-terminal.dexscreener.com/?outputMint={best_token['address']}\n")
-    else:
-        print("🛒 Simulating BONK trade on Jupiter...")
-        print("🛒 Simulated trade link:")
-        print("https://jupiter-terminal.dexscreener.com/?outputMint=DezXyvT6XiYkxjzF8rr4LwFxLyh9fjGCDNx8g9PAVyrR\n")
+    log_wallet_value(pubkey, tokens, total)
 
-    print(f"✅ Orgo is wallet-aware and USD-literate. Time to degen.")
+    print("✅ Orgo is wallet-aware, USD-literate, and Alpha-aware. Time to degen 🚀")
 
 
 if __name__ == "__main__":

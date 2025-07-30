@@ -1,1 +1,29 @@
+# Secrets & API Keys
 .env
+
+# Wallet data
+wallet.json
+wallet_log.json
+wallets/
+*.key
+*.pem
+
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Logs & Output
+*.log
+logs/
+*.csv
+*.png
+
+# Jupyter Notebooks (if used)
+.ipynb_checkpoints
+
+# VS Code
+.vscode/
+
+# MacOS & system files
+.DS_Store
