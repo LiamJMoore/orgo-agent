@@ -20,6 +20,8 @@ wallet.json
 *.pem
 *.secret
 *.pub
+wallet.json
+solana_wallet.json
 
 # Logs & History
 *.log
