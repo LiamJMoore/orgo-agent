@@ -1,2 +1,4 @@
 solana_wallet.json
 __pycache__/
+.env
+env
